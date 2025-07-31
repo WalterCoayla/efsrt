@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Empresa;
+use App\Models\Representante; // Necesario para el formulario de creación
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -27,30 +28,46 @@ class EmpresaController extends Controller
      */
     public function create()
     {
+        $representantes = Representante::with('persona', 'cargo')->get();
+        return view('empresas.partials.create-form', compact('representantes'));
+    }
+    /* 
+    public function create()
+    {
         // Puedes pasar datos adicionales a la vista si son necesarios para el formulario,
         // por ejemplo, una lista de representantes o cargos si los manejas en un select.
         return view('empresas.create');
-    }
+    } */
 
     /**
      * Almacena una nueva empresa en la base de datos.
      */
     public function store(Request $request)
     {
-        // Aquí iría la lógica para validar y guardar los datos de la nueva empresa.
-        // Ejemplo básico de validación y guardado:
-        $request->validate([
-            'ruc' => 'required|string|max:11|unique:empresas,ruc',
-            'razon_social' => 'required|string|max:255',
-            'direccion' => 'nullable|string|max:255',
-            'telefono' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255|unique:empresas,email',
-            // Agrega aquí las validaciones para representante_id si es necesario
-        ]);
+        try {
+            // Validar los datos de entrada
+            $request->validate([
+                'razon_social' => 'required|string|max:100',
+                'direccion' => 'nullable|string|max:150',
+                'telefono' => 'nullable|string|max:15',
+                'rubro' => 'nullable|string|max:200',
+                'id_representante' => 'required|integer|exists:representantes,id', // Asegura que el representante exista
+                'RUC' => 'nullable|string|max:11|unique:empresas,RUC', // RUC debe ser único
+                'es_activa' => 'nullable|boolean',
+            ]);
 
-        $empresa = Empresa::create($request->all());
+            // Crear la nueva empresa
+            Empresa::create($request->all());
 
-        return redirect()->route('empresas.index')->with('success', 'Empresa creada exitosamente.');
+            // Redirigir a la lista de empresas con un mensaje de éxito
+            return redirect()->route('empresas.index')->with('success', 'Empresa creada exitosamente.');
+        } catch (ValidationException $e) {
+            // Si la validación falla, redirige de vuelta con los errores y los datos de entrada
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            // Manejo de otros errores
+            return redirect()->back()->with('error', 'Error al crear la empresa: ' . $e->getMessage())->withInput();
+        }
     }
 
     /**
@@ -68,8 +85,8 @@ class EmpresaController extends Controller
      */
     public function edit(Empresa $empresa)
     {
-        // Aquí pasarías la empresa a la vista de edición.
-        return view('empresas.edit', compact('empresa'));
+        $representantes = Representante::with('persona', 'cargo')->get();
+        return view('empresas.edit', compact('empresa', 'representantes'));
     }
 
     /**
@@ -77,18 +94,28 @@ class EmpresaController extends Controller
      */
     public function update(Request $request, Empresa $empresa)
     {
-        // Lógica para validar y actualizar la empresa.
-        $request->validate([
-            'ruc' => 'required|string|max:11|unique:empresas,ruc,' . $empresa->id,
-            'razon_social' => 'required|string|max:255',
-            'direccion' => 'nullable|string|max:255',
-            'telefono' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255|unique:empresas,email,' . $empresa->id,
-        ]);
+        try {
+            // Validar los datos de entrada
+            $request->validate([
+                'razon_social' => 'required|string|max:100',
+                'direccion' => 'nullable|string|max:150',
+                'telefono' => 'nullable|string|max:15',
+                'rubro' => 'nullable|string|max:200',
+                'id_representante' => 'required|integer|exists:representantes,id',
+                'RUC' => 'nullable|string|max:11|unique:empresas,RUC,' . $empresa->id, // RUC debe ser único, excepto para la empresa actual
+                'es_activa' => 'nullable|boolean',
+            ]);
 
-        $empresa->update($request->all());
+            // Actualizar la empresa
+            $empresa->update($request->all());
 
-        return redirect()->route('empresas.index')->with('success', 'Empresa actualizada exitosamente.');
+            // Redirigir a la lista de empresas con un mensaje de éxito
+            return redirect()->route('empresas.index')->with('success', 'Empresa actualizada exitosamente.');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al actualizar la empresa: ' . $e->getMessage())->withInput();
+        }
     }
 
     /**
@@ -96,8 +123,12 @@ class EmpresaController extends Controller
      */
     public function destroy(Empresa $empresa)
     {
-        $empresa->delete();
-        return redirect()->route('empresas.index')->with('success', 'Empresa eliminada exitosamente.');
+        try {
+            $empresa->delete();
+            return redirect()->route('empresas.index')->with('success', 'Empresa eliminada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al eliminar la empresa: ' . $e->getMessage());
+        }
     }
     
 }

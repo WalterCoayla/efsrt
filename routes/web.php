@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\RepresentanteController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,6 @@ require __DIR__.'/auth.php';
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
     Route::resource('empresas', EmpresaController::class);
+    Route::resource('representantes', RepresentanteController::class);
     // Agrega aquí otras rutas que requieran autenticación
 });
