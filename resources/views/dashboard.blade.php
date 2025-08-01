@@ -1,17 +1,35 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.admin') {{-- Extiende tu plantilla principal de AdminLTE --}}
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+@section('title', 'Dashboard') {{-- Título de la página --}}
+@section('page_title', 'Dashboard Principal') {{-- Título en el encabezado de contenido --}}
+@section('breadcrumb', 'Inicio') {{-- Breadcrumb --}}
+
+@section('content')
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">¡Bienvenido al Dashboard!</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            Has iniciado sesión exitosamente en tu aplicación EFSRT con AdminLTE.
+                        </p>
+                        <p class="card-text">
+                            Puedes navegar usando el menú lateral.
+                        </p>
+                    </div>
                 </div>
             </div>
+            <!-- /.col-md-12 -->
         </div>
+        <!-- /.row -->
     </div>
-</x-app-layout>
+    <!-- /.container-fluid -->
+@stop
+
+{{-- Puedes añadir scripts específicos para el dashboard aquí si los necesitas --}}
+@section('js')
+    {{-- <script> console.log('Hi, I am using the Dashboard!'); </script> --}}
+@stop
