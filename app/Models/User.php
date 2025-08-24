@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'id_persona', // ¡Añade esta línea!
+        'role_type', // ¡Añade esta línea!
     ];
 
     /**

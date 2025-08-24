@@ -25,9 +25,11 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Experiencias Formativas en Situaciones Reales de Trabajo</a>
+                    <a href="#" class="nav-link">Inicio</a>
                 </li>
-                
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contacto</a>
+                </li>
             </ul>
 
             <!-- Right navbar links -->
@@ -59,6 +61,8 @@
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
+                {{-- Enlace de Cerrar Sesión (visible para usuarios autenticados) --}}
+                @auth
                 <li class="nav-item">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -67,6 +71,7 @@
                         </a>
                     </form>
                 </li>
+                @endauth
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -76,7 +81,7 @@
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
                 <img src="{{ asset('vendor/adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">EFSRT</span>
+                <span class="brand-text font-weight-light">EFSRT IESJCM</span>
             </a>
 
             <!-- Sidebar -->
@@ -84,10 +89,9 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <!-- <img src="{{ asset('vendor/adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image"> -->
-                        
-                        
-                        <i class="fas fa-user fa-2x text-white" style="line-height: 1.2;"></i>
+                        {{-- Icono de usuario de Font Awesome en blanco --}}
+                        <!-- <i class="fa-regular fa-user fa-2x text-white" style="line-height: 2.5;"></i> -->
+                        <i class="far fa-user text-white" style="line-height: 2.5;"></i>
                     </div>
                     <div class="info">
                         {{-- Muestra el nombre del usuario autenticado desde la relación con Persona --}}
@@ -118,10 +122,8 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                             with font-awesome or any other icon font library -->
+                        <!-- Dashboard siempre visible -->
                         <li class="nav-item">
-                            {{-- Se añade la clase 'active' si la ruta actual es 'dashboard' --}}
                             <a href="{{ route('dashboard') }}" class="nav-link @if(Request::routeIs('dashboard')) active @endif">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
@@ -129,15 +131,54 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            {{-- Se añade la clase 'active' si la ruta actual es 'empresas.index' o cualquier otra ruta de 'empresas.*' --}}
-                            <a href="{{ route('empresas.index') }}" class="nav-link @if(Request::routeIs('empresas.*')) active @endif">
-                                <i class="nav-icon fas fa-building"></i>
-                                <p>
-                                    Empresas
-                                </p>
-                            </a>
-                        </li>
+
+                        {{-- Opciones para Administradores --}}
+                        @auth
+                            @if(Auth::user()->role_type === 'admin')
+                                <li class="nav-item">
+                                    <a href="{{ route('empresas.index') }}" class="nav-link @if(Request::routeIs('empresas.*')) active @endif">
+                                        <i class="nav-icon fas fa-building"></i>
+                                        <p>
+                                            Empresas
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('representantes.index') }}" class="nav-link @if(Request::routeIs('representantes.*')) active @endif">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>
+                                            Representantes
+                                        </p>
+                                    </a>
+                                </li>
+                            @endif
+
+                            {{-- Opciones para Docentes --}}
+                            @if(Auth::user()->role_type === 'docente')
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link"> {{-- Reemplazar # con la ruta de perfil de docente --}}
+                                        <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                        <p>
+                                            Mi Perfil Docente
+                                        </p>
+                                    </a>
+                                </li>
+                                {{-- Agrega más opciones específicas para docentes aquí --}}
+                            @endif
+
+                            {{-- Opciones para Estudiantes --}}
+                            @if(Auth::user()->role_type === 'estudiante')
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link"> {{-- Reemplazar # con la ruta de perfil de estudiante --}}
+                                        <i class="nav-icon fas fa-user-graduate"></i>
+                                        <p>
+                                            Mi Perfil Estudiante
+                                        </p>
+                                    </a>
+                                </li>
+                                {{-- Agrega más opciones específicas para estudiantes aquí --}}
+                            @endif
+                        @endauth
                         {{-- Puedes agregar más elementos de menú aquí --}}
                     </ul>
                 </nav>
@@ -190,11 +231,10 @@
         <footer class="main-footer">
             <!-- To the right -->
             <div class="float-right d-none d-sm-inline">
-                APSTI / 
-                <a href="http://iesjcm.edu.pe" target="_blank">IES. JCM.</a>
+                Todo lo que quieras
             </div>
             <!-- Default to the left -->
-            <strong>Copyright &copy; 2025 <a href="#" title="Experiencias Formativas en Situaciones Reales de Trabajo">EFSRT</a>.</strong> Todos los derechos reservados.
+            <strong>Copyright &copy; 2023-2024 <a href="#">EFSRT</a>.</strong> Todos los derechos reservados.
         </footer>
     </div>
     <!-- ./wrapper -->

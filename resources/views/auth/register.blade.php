@@ -1,7 +1,9 @@
 <x-guest-layout>
+    
     <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            {{-- Cambiado a col-md-12 para que ocupe el ancho completo de la fila --}}
+            <div class="col-md-12">
                 <div class="card shadow-lg">
                     <div class="card-header bg-primary text-white text-center">
                         <h4>Registro de Nuevo Usuario</h4>
@@ -12,33 +14,37 @@
 
                             <!-- Sección de Datos de Usuario (Breeze por defecto) -->
                             <h5 class="mb-3 text-primary">Datos de Acceso</h5>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nombre de Usuario</label>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <div class="row">
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="name" class="form-label">Nombre de Usuario</label>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email (para login)</label>
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="username">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email (para login)</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="username">
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="password" class="form-label">Contraseña</label>
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                    @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                @error('password')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
-                                <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
+                                    <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                </div>
                             </div>
 
                             <hr class="my-4">
@@ -46,14 +52,14 @@
                             <!-- Sección de Datos de Persona -->
                             <h5 class="mb-3 text-primary">Datos Personales</h5>
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="form-group col-md-6 mb-3">
                                     <label for="nombres" class="form-label">Nombres</label>
                                     <input id="nombres" type="text" class="form-control @error('nombres') is-invalid @enderror" name="nombres" value="{{ old('nombres') }}" required autocomplete="given-name">
                                     @error('nombres')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="form-group col-md-6 mb-3">
                                     <label for="apellidos" class="form-label">Apellidos</label>
                                     <input id="apellidos" type="text" class="form-control @error('apellidos') is-invalid @enderror" name="apellidos" value="{{ old('apellidos') }}" required autocomplete="family-name">
                                     @error('apellidos')
@@ -63,14 +69,14 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="form-group col-md-6 mb-3">
                                     <label for="dni" class="form-label">DNI</label>
                                     <input id="dni" type="text" class="form-control @error('dni') is-invalid @enderror" name="dni" value="{{ old('dni') }}" required>
                                     @error('dni')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="form-group col-md-6 mb-3">
                                     <label for="correo_persona" class="form-label">Email Personal</label>
                                     <input id="correo_persona" type="email" class="form-control @error('correo_persona') is-invalid @enderror" name="correo_persona" value="{{ old('correo_persona') }}" required autocomplete="email">
                                     @error('correo_persona')
@@ -79,7 +85,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="form-group mb-3">
                                 <label for="direccion" class="form-label">Dirección</label>
                                 <input id="direccion" type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" value="{{ old('direccion') }}" autocomplete="street-address">
                                 @error('direccion')
@@ -88,14 +94,14 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="form-group col-md-6 mb-3">
                                     <label for="telefono" class="form-label">Teléfono</label>
                                     <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="tel">
                                     @error('telefono')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="form-group col-md-6 mb-3">
                                     <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
                                     <input id="fecha_nacimiento" type="date" class="form-control @error('fecha_nacimiento') is-invalid @enderror" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}">
                                     @error('fecha_nacimiento')
@@ -104,7 +110,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-4">
+                            <div class="form-group mb-4">
                                 <label for="id_tipo_documento" class="form-label">Tipo de Documento</label>
                                 <select id="id_tipo_documento" class="form-select @error('id_tipo_documento') is-invalid @enderror" name="id_tipo_documento" required>
                                     <option value="">Seleccione un tipo de documento</option>
@@ -123,8 +129,12 @@
                             <h5 class="mb-3 text-primary">Tipo de Rol</h5>
                             <div class="mb-4">
                                 <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role_type" id="role_admin" value="admin" {{ old('role_type') == 'admin' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="role_admin">Administrador</label>
+                                </div>
+                                <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="role_type" id="role_none" value="none" {{ old('role_type', 'none') == 'none' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="role_none">Ninguno</label>
+                                    <label class="form-check-label" for="role_none">General</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="role_type" id="role_docente" value="docente" {{ old('role_type') == 'docente' ? 'checked' : '' }}>
@@ -142,41 +152,45 @@
                             <!-- Sección de Datos de Docente (Condicional) -->
                             <div id="docente_fields" style="{{ old('role_type') == 'docente' ? '' : 'display:none;' }}">
                                 <h5 class="mb-3 text-primary">Datos de Docente</h5>
-                                <div class="mb-3">
-                                    <label for="id_programa_docente" class="form-label">Programa de Estudio (Docente)</label>
-                                    <select id="id_programa_docente" class="form-select @error('id_programa_docente') is-invalid @enderror" name="id_programa_docente">
-                                        <option value="">Seleccione un programa</option>
-                                        @foreach($programasEstudio as $programa)
-                                            <option value="{{ $programa->id }}" @selected(old('id_programa_docente') == $programa->id)>{{ $programa->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('id_programa_docente')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="mb-4">
-                                    <label for="especialidad" class="form-label">Especialidad (Docente)</label>
-                                    <input id="especialidad" type="text" class="form-control @error('especialidad') is-invalid @enderror" name="especialidad" value="{{ old('especialidad') }}">
-                                    @error('especialidad')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                <div class="row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="id_programa_docente" class="form-label">Programa de Estudio (Docente)</label>
+                                        <select id="id_programa_docente" class="form-select @error('id_programa_docente') is-invalid @enderror" name="id_programa_docente">
+                                            <option value="">Seleccione un programa</option>
+                                            @foreach($programasEstudio as $programa)
+                                                <option value="{{ $programa->id }}" @selected(old('id_programa_docente') == $programa->id)>{{ $programa->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('id_programa_docente')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-6 mb-4">
+                                        <label for="especialidad" class="form-label">Especialidad (Docente)</label>
+                                        <input id="especialidad" type="text" class="form-control @error('especialidad') is-invalid @enderror" name="especialidad" value="{{ old('especialidad') }}">
+                                        @error('especialidad')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Sección de Datos de Estudiante (Condicional) -->
                             <div id="estudiante_fields" style="{{ old('role_type') == 'estudiante' ? '' : 'display:none;' }}">
                                 <h5 class="mb-3 text-primary">Datos de Estudiante</h5>
-                                <div class="mb-4">
-                                    <label for="id_programa_estudiante" class="form-label">Programa de Estudio (Estudiante)</label>
-                                    <select id="id_programa_estudiante" class="form-select @error('id_programa_estudiante') is-invalid @enderror" name="id_programa_estudiante">
-                                        <option value="">Seleccione un programa</option>
-                                        @foreach($programasEstudio as $programa)
-                                            <option value="{{ $programa->id }}" @selected(old('id_programa_estudiante') == $programa->id)>{{ $programa->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('id_programa_estudiante')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                <div class="row">
+                                    <div class="form-group col-md-12 mb-4"> {{-- Ocupa toda la fila si solo hay un campo --}}
+                                        <label for="id_programa_estudiante" class="form-label">Programa de Estudio (Estudiante)</label>
+                                        <select id="id_programa_estudiante" class="form-select @error('id_programa_estudiante') is-invalid @enderror" name="id_programa_estudiante">
+                                            <option value="">Seleccione un programa</option>
+                                            @foreach($programasEstudio as $programa)
+                                                <option value="{{ $programa->id }}" @selected(old('id_programa_estudiante') == $programa->id)>{{ $programa->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('id_programa_estudiante')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 

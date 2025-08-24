@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Añade la columna id_persona
-            $table->unsignedBigInteger('id_persona')->nullable()->after('id'); // O después de 'email' si prefieres
-
-            // Añade la clave foránea
-            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('set null');
+            // Añade la columna 'role_type' después de 'email'
+            // 'admin', 'docente', 'estudiante', 'none' (o 'general')
+            $table->string('role_type')->default('none')->after('email');
         });
     }
 
@@ -26,10 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Elimina la clave foránea primero
-            $table->dropForeign(['id_persona']);
-            // Luego elimina la columna
-            $table->dropColumn('id_persona');
+            $table->dropColumn('role_type');
         });
     }
 };
